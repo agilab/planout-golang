@@ -46,18 +46,19 @@ func generateNameToHash(unit, salt string) string {
 	return experimentid
 }
 
-func getSalt(args map[string]interface{}, experimentSalt, parameterSalt string) string {
+func getSalt(args map[string]interface{}, interpreter *Interpreter) string {
 	fullSalt, exists := args["full_salt"]
 	if exists {
 		return fullSalt.(string)
 	}
 
-	argParameterSalt, exists := args["salt"]
+	rawSalt, exists := args["salt"]
 	if exists {
-		return experimentSalt + "." + argParameterSalt.(string)
+		salt := interpreter.evaluate(rawSalt)
+		return interpreter.Salt + "." + salt.(string)
 	}
 
-	return experimentSalt + "." + parameterSalt
+	return interpreter.Salt + "." + interpreter.parameterSalt
 }
 
 func getUnit(args map[string]interface{}, interpreter *Interpreter) string {
@@ -73,7 +74,7 @@ func getUnit(args map[string]interface{}, interpreter *Interpreter) string {
 func getHash(args map[string]interface{}, interpreter *Interpreter, appended_units ...string) uint64 {
 
 	unitstr := getUnit(args, interpreter)
-	salt := getSalt(args, interpreter.Salt, interpreter.parameterSalt)
+	salt := getSalt(args, interpreter)
 	name := generateNameToHash(unitstr, salt)
 
 	if len(appended_units) > 0 {

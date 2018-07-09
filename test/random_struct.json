@@ -1,0 +1,339 @@
+{
+  "op": "seq",
+  "seq": [
+   {
+    "op": "set",
+    "var": "user_id",
+    "value": {
+     "op": "index",
+     "base": {
+      "op": "get",
+      "var": "user"
+     },
+     "index": "ID"
+    }
+   },
+   {
+    "op": "set",
+    "var": "user_created_at",
+    "value": {
+     "op": "index",
+     "base": {
+      "op": "get",
+      "var": "user"
+     },
+     "index": "CreatedAt"
+    }
+   },
+   {
+    "op": "set",
+    "var": "unset",
+    "value": "@unset"
+   },
+   {
+    "op": "set",
+    "var": "rule",
+    "value": {
+     "op": "get",
+     "var": "unset"
+    }
+   },
+   {
+    "op": "cond",
+    "cond": [
+     {
+      "if": {
+       "op": "equals",
+       "left": {
+        "op": "get",
+        "var": "rule"
+       },
+       "right": {
+        "op": "get",
+        "var": "unset"
+       }
+      },
+      "then": {
+       "op": "seq",
+       "seq": [
+        {
+         "op": "set",
+         "var": "len",
+         "value": {
+          "value": {
+           "op": "get",
+           "var": "after_time_rules"
+          },
+          "op": "length"
+         }
+        },
+        {
+         "op": "cond",
+         "cond": [
+          {
+           "if": {
+            "op": ">",
+            "left": {
+             "op": "get",
+             "var": "len"
+            },
+            "right": 0
+           },
+           "then": {
+            "op": "seq",
+            "seq": [
+             {
+              "op": "set",
+              "var": "index",
+              "value": -1
+             },
+             {
+              "op": "cond",
+              "cond": [
+               {
+                "if": {
+                 "op": "equals",
+                 "left": {
+                  "op": "get",
+                  "var": "rule"
+                 },
+                 "right": {
+                  "op": "get",
+                  "var": "unset"
+                 }
+                },
+                "then": {
+                 "op": "seq",
+                 "seq": [
+                  {
+                   "op": "set",
+                   "var": "index",
+                   "value": {
+                    "op": "sum",
+                    "values": [
+                     {
+                      "op": "get",
+                      "var": "index"
+                     },
+                     1
+                    ]
+                   }
+                  },
+                  {
+                   "op": "cond",
+                   "cond": [
+                    {
+                     "if": {
+                      "op": "<",
+                      "left": {
+                       "op": "get",
+                       "var": "index"
+                      },
+                      "right": {
+                       "op": "get",
+                       "var": "len"
+                      }
+                     },
+                     "then": {
+                      "op": "seq",
+                      "seq": [
+                       {
+                        "op": "cond",
+                        "cond": [
+                         {
+                          "if": {
+                           "op": ">",
+                           "left": {
+                            "op": "get",
+                            "var": "user_created_at"
+                           },
+                           "right": {
+                            "op": "index",
+                            "base": {
+                             "op": "index",
+                             "base": {
+                              "op": "get",
+                              "var": "after_time_rules"
+                             },
+                             "index": {
+                              "op": "get",
+                              "var": "index"
+                             }
+                            },
+                            "index": "AfterTime"
+                           }
+                          },
+                          "then": {
+                           "op": "seq",
+                           "seq": [
+                            {
+                             "op": "set",
+                             "var": "n",
+                             "value": {
+                              "op": "index",
+                              "base": {
+                               "op": "index",
+                               "base": {
+                                "op": "get",
+                                "var": "after_time_rules"
+                               },
+                               "index": {
+                                "op": "get",
+                                "var": "index"
+                               }
+                              },
+                              "index": "Name"
+                             }
+                            },
+                            {
+                             "op": "set",
+                             "var": "w",
+                             "value": {
+                              "op": "index",
+                              "base": {
+                               "op": "index",
+                               "base": {
+                                "op": "get",
+                                "var": "after_time_rules"
+                               },
+                               "index": {
+                                "op": "get",
+                                "var": "index"
+                               }
+                              },
+                              "index": "Weight"
+                             }
+                            },
+                            {
+                             "op": "set",
+                             "var": "rw",
+                             "value": {
+                              "op": "sum",
+                              "values": [
+                               100,
+                               {
+                                "op": "negative",
+                                "value": {
+                                 "op": "get",
+                                 "var": "w"
+                                }
+                               }
+                              ]
+                             }
+                            },
+                            {
+                             "op": "set",
+                             "var": "rule",
+                             "value": {
+                              "choices": {
+                               "op": "array",
+                               "values": [
+                                {
+                                 "op": "get",
+                                 "var": "n"
+                                },
+                                {
+                                 "op": "get",
+                                 "var": "unset"
+                                }
+                               ]
+                              },
+                              "weights": {
+                               "op": "array",
+                               "values": [
+                                {
+                                 "op": "get",
+                                 "var": "w"
+                                },
+                                {
+                                 "op": "get",
+                                 "var": "rw"
+                                }
+                               ]
+                              },
+                              "unit": {
+                               "op": "get",
+                               "var": "user_id"
+                              },
+                              "salt": "ASDF",
+                              "op": "weightedChoice"
+                             }
+                            }
+                           ]
+                          }
+                         }
+                        ]
+                       }
+                      ]
+                     }
+                    }
+                   ]
+                  }
+                 ]
+                }
+               }
+              ]
+             }
+            ]
+           }
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "op": "cond",
+    "cond": [
+     {
+      "if": {
+       "op": "equals",
+       "left": {
+        "op": "get",
+        "var": "rule"
+       },
+       "right": {
+        "op": "get",
+        "var": "unset"
+       }
+      },
+      "then": {
+       "op": "seq",
+       "seq": [
+        {
+         "op": "set",
+         "var": "rule",
+         "value": {
+          "choices": {
+           "op": "index",
+           "base": {
+            "op": "get",
+            "var": "common_rules"
+           },
+           "index": "Names"
+          },
+          "weights": {
+           "op": "index",
+           "base": {
+            "op": "get",
+            "var": "common_rules"
+           },
+           "index": "Weights"
+          },
+          "unit": {
+           "op": "get",
+           "var": "user_id"
+          },
+          "salt": "common_rules",
+          "op": "weightedChoice"
+         }
+        }
+       ]
+      }
+     }
+    ]
+   }
+  ]
+ }

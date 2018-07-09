@@ -20,6 +20,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"math"
 	"math/rand"
 	"reflect"
@@ -27,6 +28,119 @@ import (
 	"text/template"
 	"time"
 )
+
+type IDStruct struct {
+	ID        string
+	CreatedAt int
+}
+
+func TestRandom(t *testing.T) {
+	js := readTest("test/random_struct.json")
+
+	// 构造100000个老ID，100000个新ID
+	users := []*IDStruct{}
+	for index := 0; index < 100000; index++ {
+		users = append(users, &IDStruct{
+			ID:        generateString(),
+			CreatedAt: 9999,
+		})
+	}
+
+	for index := 0; index < 100000; index++ {
+		users = append(users, &IDStruct{
+			ID:        generateString(),
+			CreatedAt: 10001,
+		})
+	}
+
+	counters := map[string]int64{}
+
+	for _, user := range users {
+		expt := &Interpreter{
+			Salt:      "global_salt",
+			Evaluated: false,
+			Inputs: map[string]interface{}{
+				"user":    user,
+				"weights": []interface{}{0.4, 0.6},
+			},
+			Outputs:   map[string]interface{}{},
+			Overrides: map[string]interface{}{},
+			Code:      js,
+		}
+
+		output, ok := expt.Run()
+		if !ok {
+			t.Errorf("Error running experiment 'test/random_ops.json'\n")
+			return
+		}
+
+		rule := output["rule"].(string)
+		counters[rule]++
+	}
+	str, _ := json.Marshal(counters)
+	log.Println("result", string(str))
+
+	log.Println("a/b", float64(counters["a"])/float64(counters["b"]))
+}
+
+type RuleAfterTime struct {
+	Name      string  // 策略名称
+	AfterTime float64 // 时间戳
+	Weight    float64 // 0-100 如果为20
+}
+
+type RuleCommon struct {
+	Names   []interface{} // 策略名称
+	Weights []interface{} // 0-100 如果为20
+}
+
+func TestRandomStruct(t *testing.T) {
+	js := readTest("test/random_struct.json")
+
+	params := map[string]interface{}{}
+	params["after_time_rules"] = []interface{}{
+		&RuleAfterTime{
+			Name:      "after9999",
+			AfterTime: 9999,
+			Weight:    100,
+		},
+		&RuleAfterTime{
+			Name:      "after1000",
+			AfterTime: 1000,
+			Weight:    20,
+		},
+	}
+	params["common_rules"] = &RuleCommon{
+		Names:   []interface{}{"common1", "common2", "common3"},
+		Weights: []interface{}{20.0, 70.0, 10.0},
+	}
+
+	params["user"] = &IDStruct{
+		ID:        generateString(),
+		CreatedAt: 1000000,
+	}
+
+	// str1, _ := json.Marshal(params)
+	// log.Println(string(str1))
+
+	expt := &Interpreter{
+		Salt:      "global_salt",
+		Evaluated: false,
+		Inputs:    params,
+		Outputs:   map[string]interface{}{},
+		Overrides: map[string]interface{}{},
+		Code:      js,
+	}
+
+	output, ok := expt.Run()
+	if !ok {
+		t.Errorf("Error running experiment 'test/random_ops.json'\n")
+		return
+	}
+
+	str, _ := json.Marshal(output)
+	log.Println(string(str))
+}
 
 func TestRandomOps(t *testing.T) {
 	js := readTest("test/random_ops.json")

@@ -19,6 +19,7 @@ package planout
 import (
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"reflect"
 	"testing"
 )
@@ -56,6 +57,9 @@ func TestSimpleOps(t *testing.T) {
 		t.Errorf("Error running experiment 'test/simple_ops.json'\n")
 		return
 	}
+
+	str, _ := json.Marshal(output)
+	log.Println(string(str))
 
 	a := output["a"]
 	if compare(a, 10.0) != 0 {

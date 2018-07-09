@@ -1,0 +1,28 @@
+user_id = user["ID"];
+user_created_at = user["CreatedAt"];
+
+unset = "@unset";
+rule = unset;
+
+if (rule==unset) {
+    len = length(after_time_rules);
+    if (len > 0) {
+        index = -1;
+        if (rule==unset) {
+            index = index + 1;
+            if (index < len) {
+                if (user_created_at > after_time_rules[index]["AfterTime"]) {
+                    n = after_time_rules[index]["Name"];
+                    w = after_time_rules[index]["Weight"];
+                    rw = 100.0-w;
+
+                    rule = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt="ASDF");
+                }
+            }
+        }
+    }
+}
+
+if (rule==unset) {
+    rule = weightedChoice(choices=common_rules["Names"], weights=common_rules["Weights"], unit=user_id, salt="common_rules");
+}

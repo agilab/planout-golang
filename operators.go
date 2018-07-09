@@ -224,8 +224,15 @@ func unwrapValue(value reflect.Value) interface{} {
 type length struct{}
 
 func (s *length) execute(m map[string]interface{}, interpreter *Interpreter) interface{} {
-	existOrPanic(m, []string{"values"}, "Length")
-	values := interpreter.evaluate(m["values"])
+	vs, exist := m["values"]
+	if !exist {
+		vs, exist = m["value"]
+		if !exist {
+			panic(fmt.Sprintf("Operator Length: Missing operand values or value\n"))
+		}
+	}
+
+	values := interpreter.evaluate(vs)
 	return len(values.([]interface{}))
 }
 
