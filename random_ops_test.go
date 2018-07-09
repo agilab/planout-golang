@@ -50,14 +50,14 @@ func TestRandomMany(t *testing.T) {
 
 	// 构造100000个老ID，100000个新ID
 	users := []*IDStruct{}
-	for index := 0; index < 10000; index++ {
+	for index := 0; index < 100000; index++ {
 		users = append(users, &IDStruct{
 			ID:        generateString(),
 			CreatedAt: 9999,
 		})
 	}
 
-	for index := 0; index < 10000; index++ {
+	for index := 0; index < 100000; index++ {
 		users = append(users, &IDStruct{
 			ID:        generateString(),
 			CreatedAt: 10001,
