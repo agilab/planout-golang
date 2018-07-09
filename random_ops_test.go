@@ -34,35 +34,68 @@ type IDStruct struct {
 	CreatedAt int
 }
 
-func TestRandom(t *testing.T) {
+type RuleAfterTime struct {
+	Name      string  // 策略名称
+	AfterTime float64 // 时间戳
+	Weight    float64 // 0-100 如果为20
+}
+
+type RuleCommon struct {
+	Names   []interface{} // 策略名称
+	Weights []interface{} // 0-100 如果为20
+}
+
+func TestRandomMany(t *testing.T) {
 	js := readTest("test/random_struct.json")
 
 	// 构造100000个老ID，100000个新ID
 	users := []*IDStruct{}
-	for index := 0; index < 100000; index++ {
+	for index := 0; index < 10000; index++ {
 		users = append(users, &IDStruct{
 			ID:        generateString(),
 			CreatedAt: 9999,
 		})
 	}
 
-	for index := 0; index < 100000; index++ {
+	for index := 0; index < 10000; index++ {
 		users = append(users, &IDStruct{
 			ID:        generateString(),
 			CreatedAt: 10001,
 		})
 	}
 
-	counters := map[string]int64{}
+	afterTimeRules := []interface{}{
+		&RuleAfterTime{
+			Name:      "after9999",
+			AfterTime: 9999,
+			Weight:    100,
+		},
+		&RuleAfterTime{
+			Name:      "after1000",
+			AfterTime: 1000,
+			Weight:    20,
+		},
+	}
+	if len(afterTimeRules) > 10 {
+		panic("length of afterTimeRules must <=10")
+	}
 
+	commonRule := &RuleCommon{
+		Names:   []interface{}{"common1", "common2", "common3"},
+		Weights: []interface{}{20.0, 70.0, 10.0},
+	}
+
+	counters := map[string]int64{}
 	for _, user := range users {
+		params := map[string]interface{}{}
+		params["after_time_rules"] = afterTimeRules
+		params["common_rules"] = commonRule
+		params["user"] = user
+
 		expt := &Interpreter{
 			Salt:      "global_salt",
 			Evaluated: false,
-			Inputs: map[string]interface{}{
-				"user":    user,
-				"weights": []interface{}{0.4, 0.6},
-			},
+			Inputs:    params,
 			Outputs:   map[string]interface{}{},
 			Overrides: map[string]interface{}{},
 			Code:      js,
@@ -80,18 +113,7 @@ func TestRandom(t *testing.T) {
 	str, _ := json.Marshal(counters)
 	log.Println("result", string(str))
 
-	log.Println("a/b", float64(counters["a"])/float64(counters["b"]))
-}
-
-type RuleAfterTime struct {
-	Name      string  // 策略名称
-	AfterTime float64 // 时间戳
-	Weight    float64 // 0-100 如果为20
-}
-
-type RuleCommon struct {
-	Names   []interface{} // 策略名称
-	Weights []interface{} // 0-100 如果为20
+	log.Println("a/b", float64(counters["common1"])/float64(counters["common2"]))
 }
 
 func TestRandomStruct(t *testing.T) {
