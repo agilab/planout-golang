@@ -39,251 +39,86 @@
     }
    },
    {
+    "op": "set",
+    "var": "len",
+    "value": {
+     "value": {
+      "op": "get",
+      "var": "after_time_rules"
+     },
+     "op": "length"
+    }
+   },
+   {
     "op": "cond",
     "cond": [
      {
       "if": {
-       "op": "equals",
+       "op": ">",
        "left": {
         "op": "get",
-        "var": "rule"
+        "var": "len"
        },
-       "right": {
-        "op": "get",
-        "var": "unset"
-       }
+       "right": 0
       },
       "then": {
        "op": "seq",
        "seq": [
         {
          "op": "set",
-         "var": "len",
-         "value": {
-          "value": {
-           "op": "get",
-           "var": "after_time_rules"
-          },
-          "op": "length"
-         }
+         "var": "index",
+         "value": 0
         },
         {
          "op": "cond",
          "cond": [
           {
            "if": {
-            "op": ">",
+            "op": "<",
             "left": {
              "op": "get",
-             "var": "len"
+             "var": "index"
             },
-            "right": 0
+            "right": {
+             "op": "get",
+             "var": "len"
+            }
            },
            "then": {
             "op": "seq",
             "seq": [
              {
               "op": "set",
-              "var": "index",
-              "value": -1
-             },
-             {
-              "op": "cond",
-              "cond": [
-               {
-                "if": {
-                 "op": "equals",
-                 "left": {
-                  "op": "get",
-                  "var": "rule"
-                 },
-                 "right": {
-                  "op": "get",
-                  "var": "unset"
-                 }
-                },
-                "then": {
-                 "op": "seq",
-                 "seq": [
-                  {
-                   "op": "set",
-                   "var": "index",
-                   "value": {
-                    "op": "sum",
-                    "values": [
-                     {
-                      "op": "get",
-                      "var": "index"
-                     },
-                     1
-                    ]
-                   }
-                  },
-                  {
-                   "op": "cond",
-                   "cond": [
-                    {
-                     "if": {
-                      "op": "<",
-                      "left": {
-                       "op": "get",
-                       "var": "index"
-                      },
-                      "right": {
-                       "op": "get",
-                       "var": "len"
-                      }
-                     },
-                     "then": {
-                      "op": "seq",
-                      "seq": [
-                       {
-                        "op": "set",
-                        "var": "atr",
-                        "value": {
-                         "op": "index",
-                         "base": {
-                          "op": "get",
-                          "var": "after_time_rules"
-                         },
-                         "index": {
-                          "op": "get",
-                          "var": "index"
-                         }
-                        }
-                       },
-                       {
-                        "op": "cond",
-                        "cond": [
-                         {
-                          "if": {
-                           "op": ">",
-                           "left": {
-                            "op": "get",
-                            "var": "user_created_at"
-                           },
-                           "right": {
-                            "op": "index",
-                            "base": {
-                             "op": "get",
-                             "var": "atr"
-                            },
-                            "index": "AfterTime"
-                           }
-                          },
-                          "then": {
-                           "op": "seq",
-                           "seq": [
-                            {
-                             "op": "set",
-                             "var": "n",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Name"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "w",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Weight"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rw",
-                             "value": {
-                              "op": "sum",
-                              "values": [
-                               100,
-                               {
-                                "op": "negative",
-                                "value": {
-                                 "op": "get",
-                                 "var": "w"
-                                }
-                               }
-                              ]
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rule",
-                             "value": {
-                              "choices": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "n"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "unset"
-                                }
-                               ]
-                              },
-                              "weights": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "w"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "rw"
-                                }
-                               ]
-                              },
-                              "unit": {
-                               "op": "get",
-                               "var": "user_id"
-                              },
-                              "salt": {
-                               "op": "get",
-                               "var": "n"
-                              },
-                              "op": "weightedChoice"
-                             }
-                            }
-                           ]
-                          }
-                         }
-                        ]
-                       }
-                      ]
-                     }
-                    }
-                   ]
-                  }
-                 ]
-                }
+              "var": "atr",
+              "value": {
+               "op": "index",
+               "base": {
+                "op": "get",
+                "var": "after_time_rules"
+               },
+               "index": {
+                "op": "get",
+                "var": "index"
                }
-              ]
+              }
              },
              {
               "op": "cond",
               "cond": [
                {
                 "if": {
-                 "op": "equals",
+                 "op": ">",
                  "left": {
                   "op": "get",
-                  "var": "rule"
+                  "var": "user_created_at"
                  },
                  "right": {
-                  "op": "get",
-                  "var": "unset"
+                  "op": "index",
+                  "base": {
+                   "op": "get",
+                   "var": "atr"
+                  },
+                  "index": "AfterTime"
                  }
                 },
                 "then": {
@@ -291,1636 +126,85 @@
                  "seq": [
                   {
                    "op": "set",
-                   "var": "index",
+                   "var": "n",
                    "value": {
-                    "op": "sum",
-                    "values": [
-                     {
-                      "op": "get",
-                      "var": "index"
-                     },
-                     1
-                    ]
+                    "op": "index",
+                    "base": {
+                     "op": "get",
+                     "var": "atr"
+                    },
+                    "index": "Name"
                    }
                   },
-                  {
-                   "op": "cond",
-                   "cond": [
-                    {
-                     "if": {
-                      "op": "<",
-                      "left": {
-                       "op": "get",
-                       "var": "index"
-                      },
-                      "right": {
-                       "op": "get",
-                       "var": "len"
-                      }
-                     },
-                     "then": {
-                      "op": "seq",
-                      "seq": [
-                       {
-                        "op": "set",
-                        "var": "atr",
-                        "value": {
-                         "op": "index",
-                         "base": {
-                          "op": "get",
-                          "var": "after_time_rules"
-                         },
-                         "index": {
-                          "op": "get",
-                          "var": "index"
-                         }
-                        }
-                       },
-                       {
-                        "op": "cond",
-                        "cond": [
-                         {
-                          "if": {
-                           "op": ">",
-                           "left": {
-                            "op": "get",
-                            "var": "user_created_at"
-                           },
-                           "right": {
-                            "op": "index",
-                            "base": {
-                             "op": "get",
-                             "var": "atr"
-                            },
-                            "index": "AfterTime"
-                           }
-                          },
-                          "then": {
-                           "op": "seq",
-                           "seq": [
-                            {
-                             "op": "set",
-                             "var": "n",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Name"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "w",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Weight"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rw",
-                             "value": {
-                              "op": "sum",
-                              "values": [
-                               100,
-                               {
-                                "op": "negative",
-                                "value": {
-                                 "op": "get",
-                                 "var": "w"
-                                }
-                               }
-                              ]
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rule",
-                             "value": {
-                              "choices": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "n"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "unset"
-                                }
-                               ]
-                              },
-                              "weights": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "w"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "rw"
-                                }
-                               ]
-                              },
-                              "unit": {
-                               "op": "get",
-                               "var": "user_id"
-                              },
-                              "salt": {
-                               "op": "get",
-                               "var": "n"
-                              },
-                              "op": "weightedChoice"
-                             }
-                            }
-                           ]
-                          }
-                         }
-                        ]
-                       }
-                      ]
-                     }
-                    }
-                   ]
-                  }
-                 ]
-                }
-               }
-              ]
-             },
-             {
-              "op": "cond",
-              "cond": [
-               {
-                "if": {
-                 "op": "equals",
-                 "left": {
-                  "op": "get",
-                  "var": "rule"
-                 },
-                 "right": {
-                  "op": "get",
-                  "var": "unset"
-                 }
-                },
-                "then": {
-                 "op": "seq",
-                 "seq": [
                   {
                    "op": "set",
-                   "var": "index",
+                   "var": "w",
                    "value": {
-                    "op": "sum",
-                    "values": [
-                     {
-                      "op": "get",
-                      "var": "index"
-                     },
-                     1
-                    ]
+                    "op": "index",
+                    "base": {
+                     "op": "get",
+                     "var": "atr"
+                    },
+                    "index": "Weight"
                    }
                   },
-                  {
-                   "op": "cond",
-                   "cond": [
-                    {
-                     "if": {
-                      "op": "<",
-                      "left": {
-                       "op": "get",
-                       "var": "index"
-                      },
-                      "right": {
-                       "op": "get",
-                       "var": "len"
-                      }
-                     },
-                     "then": {
-                      "op": "seq",
-                      "seq": [
-                       {
-                        "op": "set",
-                        "var": "atr",
-                        "value": {
-                         "op": "index",
-                         "base": {
-                          "op": "get",
-                          "var": "after_time_rules"
-                         },
-                         "index": {
-                          "op": "get",
-                          "var": "index"
-                         }
-                        }
-                       },
-                       {
-                        "op": "cond",
-                        "cond": [
-                         {
-                          "if": {
-                           "op": ">",
-                           "left": {
-                            "op": "get",
-                            "var": "user_created_at"
-                           },
-                           "right": {
-                            "op": "index",
-                            "base": {
-                             "op": "get",
-                             "var": "atr"
-                            },
-                            "index": "AfterTime"
-                           }
-                          },
-                          "then": {
-                           "op": "seq",
-                           "seq": [
-                            {
-                             "op": "set",
-                             "var": "n",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Name"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "w",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Weight"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rw",
-                             "value": {
-                              "op": "sum",
-                              "values": [
-                               100,
-                               {
-                                "op": "negative",
-                                "value": {
-                                 "op": "get",
-                                 "var": "w"
-                                }
-                               }
-                              ]
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rule",
-                             "value": {
-                              "choices": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "n"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "unset"
-                                }
-                               ]
-                              },
-                              "weights": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "w"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "rw"
-                                }
-                               ]
-                              },
-                              "unit": {
-                               "op": "get",
-                               "var": "user_id"
-                              },
-                              "salt": {
-                               "op": "get",
-                               "var": "n"
-                              },
-                              "op": "weightedChoice"
-                             }
-                            }
-                           ]
-                          }
-                         }
-                        ]
-                       }
-                      ]
-                     }
-                    }
-                   ]
-                  }
-                 ]
-                }
-               }
-              ]
-             },
-             {
-              "op": "cond",
-              "cond": [
-               {
-                "if": {
-                 "op": "equals",
-                 "left": {
-                  "op": "get",
-                  "var": "rule"
-                 },
-                 "right": {
-                  "op": "get",
-                  "var": "unset"
-                 }
-                },
-                "then": {
-                 "op": "seq",
-                 "seq": [
                   {
                    "op": "set",
-                   "var": "index",
+                   "var": "rw",
                    "value": {
                     "op": "sum",
                     "values": [
+                     100,
                      {
-                      "op": "get",
-                      "var": "index"
-                     },
-                     1
+                      "op": "negative",
+                      "value": {
+                       "op": "get",
+                       "var": "w"
+                      }
+                     }
                     ]
                    }
                   },
-                  {
-                   "op": "cond",
-                   "cond": [
-                    {
-                     "if": {
-                      "op": "<",
-                      "left": {
-                       "op": "get",
-                       "var": "index"
-                      },
-                      "right": {
-                       "op": "get",
-                       "var": "len"
-                      }
-                     },
-                     "then": {
-                      "op": "seq",
-                      "seq": [
-                       {
-                        "op": "set",
-                        "var": "atr",
-                        "value": {
-                         "op": "index",
-                         "base": {
-                          "op": "get",
-                          "var": "after_time_rules"
-                         },
-                         "index": {
-                          "op": "get",
-                          "var": "index"
-                         }
-                        }
-                       },
-                       {
-                        "op": "cond",
-                        "cond": [
-                         {
-                          "if": {
-                           "op": ">",
-                           "left": {
-                            "op": "get",
-                            "var": "user_created_at"
-                           },
-                           "right": {
-                            "op": "index",
-                            "base": {
-                             "op": "get",
-                             "var": "atr"
-                            },
-                            "index": "AfterTime"
-                           }
-                          },
-                          "then": {
-                           "op": "seq",
-                           "seq": [
-                            {
-                             "op": "set",
-                             "var": "n",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Name"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "w",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Weight"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rw",
-                             "value": {
-                              "op": "sum",
-                              "values": [
-                               100,
-                               {
-                                "op": "negative",
-                                "value": {
-                                 "op": "get",
-                                 "var": "w"
-                                }
-                               }
-                              ]
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rule",
-                             "value": {
-                              "choices": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "n"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "unset"
-                                }
-                               ]
-                              },
-                              "weights": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "w"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "rw"
-                                }
-                               ]
-                              },
-                              "unit": {
-                               "op": "get",
-                               "var": "user_id"
-                              },
-                              "salt": {
-                               "op": "get",
-                               "var": "n"
-                              },
-                              "op": "weightedChoice"
-                             }
-                            }
-                           ]
-                          }
-                         }
-                        ]
-                       }
-                      ]
-                     }
-                    }
-                   ]
-                  }
-                 ]
-                }
-               }
-              ]
-             },
-             {
-              "op": "cond",
-              "cond": [
-               {
-                "if": {
-                 "op": "equals",
-                 "left": {
-                  "op": "get",
-                  "var": "rule"
-                 },
-                 "right": {
-                  "op": "get",
-                  "var": "unset"
-                 }
-                },
-                "then": {
-                 "op": "seq",
-                 "seq": [
                   {
                    "op": "set",
-                   "var": "index",
+                   "var": "rule",
                    "value": {
-                    "op": "sum",
-                    "values": [
-                     {
-                      "op": "get",
-                      "var": "index"
-                     },
-                     1
-                    ]
-                   }
-                  },
-                  {
-                   "op": "cond",
-                   "cond": [
-                    {
-                     "if": {
-                      "op": "<",
-                      "left": {
+                    "choices": {
+                     "op": "array",
+                     "values": [
+                      {
                        "op": "get",
-                       "var": "index"
+                       "var": "n"
                       },
-                      "right": {
+                      {
                        "op": "get",
-                       "var": "len"
+                       "var": "unset"
                       }
-                     },
-                     "then": {
-                      "op": "seq",
-                      "seq": [
-                       {
-                        "op": "set",
-                        "var": "atr",
-                        "value": {
-                         "op": "index",
-                         "base": {
-                          "op": "get",
-                          "var": "after_time_rules"
-                         },
-                         "index": {
-                          "op": "get",
-                          "var": "index"
-                         }
-                        }
-                       },
-                       {
-                        "op": "cond",
-                        "cond": [
-                         {
-                          "if": {
-                           "op": ">",
-                           "left": {
-                            "op": "get",
-                            "var": "user_created_at"
-                           },
-                           "right": {
-                            "op": "index",
-                            "base": {
-                             "op": "get",
-                             "var": "atr"
-                            },
-                            "index": "AfterTime"
-                           }
-                          },
-                          "then": {
-                           "op": "seq",
-                           "seq": [
-                            {
-                             "op": "set",
-                             "var": "n",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Name"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "w",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Weight"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rw",
-                             "value": {
-                              "op": "sum",
-                              "values": [
-                               100,
-                               {
-                                "op": "negative",
-                                "value": {
-                                 "op": "get",
-                                 "var": "w"
-                                }
-                               }
-                              ]
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rule",
-                             "value": {
-                              "choices": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "n"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "unset"
-                                }
-                               ]
-                              },
-                              "weights": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "w"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "rw"
-                                }
-                               ]
-                              },
-                              "unit": {
-                               "op": "get",
-                               "var": "user_id"
-                              },
-                              "salt": {
-                               "op": "get",
-                               "var": "n"
-                              },
-                              "op": "weightedChoice"
-                             }
-                            }
-                           ]
-                          }
-                         }
-                        ]
-                       }
-                      ]
-                     }
-                    }
-                   ]
-                  }
-                 ]
-                }
-               }
-              ]
-             },
-             {
-              "op": "cond",
-              "cond": [
-               {
-                "if": {
-                 "op": "equals",
-                 "left": {
-                  "op": "get",
-                  "var": "rule"
-                 },
-                 "right": {
-                  "op": "get",
-                  "var": "unset"
-                 }
-                },
-                "then": {
-                 "op": "seq",
-                 "seq": [
-                  {
-                   "op": "set",
-                   "var": "index",
-                   "value": {
-                    "op": "sum",
-                    "values": [
-                     {
-                      "op": "get",
-                      "var": "index"
-                     },
-                     1
-                    ]
-                   }
-                  },
-                  {
-                   "op": "cond",
-                   "cond": [
-                    {
-                     "if": {
-                      "op": "<",
-                      "left": {
+                     ]
+                    },
+                    "weights": {
+                     "op": "array",
+                     "values": [
+                      {
                        "op": "get",
-                       "var": "index"
+                       "var": "w"
                       },
-                      "right": {
+                      {
                        "op": "get",
-                       "var": "len"
+                       "var": "rw"
                       }
-                     },
-                     "then": {
-                      "op": "seq",
-                      "seq": [
-                       {
-                        "op": "set",
-                        "var": "atr",
-                        "value": {
-                         "op": "index",
-                         "base": {
-                          "op": "get",
-                          "var": "after_time_rules"
-                         },
-                         "index": {
-                          "op": "get",
-                          "var": "index"
-                         }
-                        }
-                       },
-                       {
-                        "op": "cond",
-                        "cond": [
-                         {
-                          "if": {
-                           "op": ">",
-                           "left": {
-                            "op": "get",
-                            "var": "user_created_at"
-                           },
-                           "right": {
-                            "op": "index",
-                            "base": {
-                             "op": "get",
-                             "var": "atr"
-                            },
-                            "index": "AfterTime"
-                           }
-                          },
-                          "then": {
-                           "op": "seq",
-                           "seq": [
-                            {
-                             "op": "set",
-                             "var": "n",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Name"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "w",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Weight"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rw",
-                             "value": {
-                              "op": "sum",
-                              "values": [
-                               100,
-                               {
-                                "op": "negative",
-                                "value": {
-                                 "op": "get",
-                                 "var": "w"
-                                }
-                               }
-                              ]
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rule",
-                             "value": {
-                              "choices": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "n"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "unset"
-                                }
-                               ]
-                              },
-                              "weights": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "w"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "rw"
-                                }
-                               ]
-                              },
-                              "unit": {
-                               "op": "get",
-                               "var": "user_id"
-                              },
-                              "salt": {
-                               "op": "get",
-                               "var": "n"
-                              },
-                              "op": "weightedChoice"
-                             }
-                            }
-                           ]
-                          }
-                         }
-                        ]
-                       }
-                      ]
-                     }
-                    }
-                   ]
-                  }
-                 ]
-                }
-               }
-              ]
-             },
-             {
-              "op": "cond",
-              "cond": [
-               {
-                "if": {
-                 "op": "equals",
-                 "left": {
-                  "op": "get",
-                  "var": "rule"
-                 },
-                 "right": {
-                  "op": "get",
-                  "var": "unset"
-                 }
-                },
-                "then": {
-                 "op": "seq",
-                 "seq": [
-                  {
-                   "op": "set",
-                   "var": "index",
-                   "value": {
-                    "op": "sum",
-                    "values": [
-                     {
-                      "op": "get",
-                      "var": "index"
-                     },
-                     1
-                    ]
+                     ]
+                    },
+                    "unit": {
+                     "op": "get",
+                     "var": "user_id"
+                    },
+                    "salt": {
+                     "op": "get",
+                     "var": "n"
+                    },
+                    "op": "weightedChoice"
                    }
-                  },
-                  {
-                   "op": "cond",
-                   "cond": [
-                    {
-                     "if": {
-                      "op": "<",
-                      "left": {
-                       "op": "get",
-                       "var": "index"
-                      },
-                      "right": {
-                       "op": "get",
-                       "var": "len"
-                      }
-                     },
-                     "then": {
-                      "op": "seq",
-                      "seq": [
-                       {
-                        "op": "set",
-                        "var": "atr",
-                        "value": {
-                         "op": "index",
-                         "base": {
-                          "op": "get",
-                          "var": "after_time_rules"
-                         },
-                         "index": {
-                          "op": "get",
-                          "var": "index"
-                         }
-                        }
-                       },
-                       {
-                        "op": "cond",
-                        "cond": [
-                         {
-                          "if": {
-                           "op": ">",
-                           "left": {
-                            "op": "get",
-                            "var": "user_created_at"
-                           },
-                           "right": {
-                            "op": "index",
-                            "base": {
-                             "op": "get",
-                             "var": "atr"
-                            },
-                            "index": "AfterTime"
-                           }
-                          },
-                          "then": {
-                           "op": "seq",
-                           "seq": [
-                            {
-                             "op": "set",
-                             "var": "n",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Name"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "w",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Weight"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rw",
-                             "value": {
-                              "op": "sum",
-                              "values": [
-                               100,
-                               {
-                                "op": "negative",
-                                "value": {
-                                 "op": "get",
-                                 "var": "w"
-                                }
-                               }
-                              ]
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rule",
-                             "value": {
-                              "choices": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "n"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "unset"
-                                }
-                               ]
-                              },
-                              "weights": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "w"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "rw"
-                                }
-                               ]
-                              },
-                              "unit": {
-                               "op": "get",
-                               "var": "user_id"
-                              },
-                              "salt": {
-                               "op": "get",
-                               "var": "n"
-                              },
-                              "op": "weightedChoice"
-                             }
-                            }
-                           ]
-                          }
-                         }
-                        ]
-                       }
-                      ]
-                     }
-                    }
-                   ]
-                  }
-                 ]
-                }
-               }
-              ]
-             },
-             {
-              "op": "cond",
-              "cond": [
-               {
-                "if": {
-                 "op": "equals",
-                 "left": {
-                  "op": "get",
-                  "var": "rule"
-                 },
-                 "right": {
-                  "op": "get",
-                  "var": "unset"
-                 }
-                },
-                "then": {
-                 "op": "seq",
-                 "seq": [
-                  {
-                   "op": "set",
-                   "var": "index",
-                   "value": {
-                    "op": "sum",
-                    "values": [
-                     {
-                      "op": "get",
-                      "var": "index"
-                     },
-                     1
-                    ]
-                   }
-                  },
-                  {
-                   "op": "cond",
-                   "cond": [
-                    {
-                     "if": {
-                      "op": "<",
-                      "left": {
-                       "op": "get",
-                       "var": "index"
-                      },
-                      "right": {
-                       "op": "get",
-                       "var": "len"
-                      }
-                     },
-                     "then": {
-                      "op": "seq",
-                      "seq": [
-                       {
-                        "op": "set",
-                        "var": "atr",
-                        "value": {
-                         "op": "index",
-                         "base": {
-                          "op": "get",
-                          "var": "after_time_rules"
-                         },
-                         "index": {
-                          "op": "get",
-                          "var": "index"
-                         }
-                        }
-                       },
-                       {
-                        "op": "cond",
-                        "cond": [
-                         {
-                          "if": {
-                           "op": ">",
-                           "left": {
-                            "op": "get",
-                            "var": "user_created_at"
-                           },
-                           "right": {
-                            "op": "index",
-                            "base": {
-                             "op": "get",
-                             "var": "atr"
-                            },
-                            "index": "AfterTime"
-                           }
-                          },
-                          "then": {
-                           "op": "seq",
-                           "seq": [
-                            {
-                             "op": "set",
-                             "var": "n",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Name"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "w",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Weight"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rw",
-                             "value": {
-                              "op": "sum",
-                              "values": [
-                               100,
-                               {
-                                "op": "negative",
-                                "value": {
-                                 "op": "get",
-                                 "var": "w"
-                                }
-                               }
-                              ]
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rule",
-                             "value": {
-                              "choices": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "n"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "unset"
-                                }
-                               ]
-                              },
-                              "weights": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "w"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "rw"
-                                }
-                               ]
-                              },
-                              "unit": {
-                               "op": "get",
-                               "var": "user_id"
-                              },
-                              "salt": {
-                               "op": "get",
-                               "var": "n"
-                              },
-                              "op": "weightedChoice"
-                             }
-                            }
-                           ]
-                          }
-                         }
-                        ]
-                       }
-                      ]
-                     }
-                    }
-                   ]
-                  }
-                 ]
-                }
-               }
-              ]
-             },
-             {
-              "op": "cond",
-              "cond": [
-               {
-                "if": {
-                 "op": "equals",
-                 "left": {
-                  "op": "get",
-                  "var": "rule"
-                 },
-                 "right": {
-                  "op": "get",
-                  "var": "unset"
-                 }
-                },
-                "then": {
-                 "op": "seq",
-                 "seq": [
-                  {
-                   "op": "set",
-                   "var": "index",
-                   "value": {
-                    "op": "sum",
-                    "values": [
-                     {
-                      "op": "get",
-                      "var": "index"
-                     },
-                     1
-                    ]
-                   }
-                  },
-                  {
-                   "op": "cond",
-                   "cond": [
-                    {
-                     "if": {
-                      "op": "<",
-                      "left": {
-                       "op": "get",
-                       "var": "index"
-                      },
-                      "right": {
-                       "op": "get",
-                       "var": "len"
-                      }
-                     },
-                     "then": {
-                      "op": "seq",
-                      "seq": [
-                       {
-                        "op": "set",
-                        "var": "atr",
-                        "value": {
-                         "op": "index",
-                         "base": {
-                          "op": "get",
-                          "var": "after_time_rules"
-                         },
-                         "index": {
-                          "op": "get",
-                          "var": "index"
-                         }
-                        }
-                       },
-                       {
-                        "op": "cond",
-                        "cond": [
-                         {
-                          "if": {
-                           "op": ">",
-                           "left": {
-                            "op": "get",
-                            "var": "user_created_at"
-                           },
-                           "right": {
-                            "op": "index",
-                            "base": {
-                             "op": "get",
-                             "var": "atr"
-                            },
-                            "index": "AfterTime"
-                           }
-                          },
-                          "then": {
-                           "op": "seq",
-                           "seq": [
-                            {
-                             "op": "set",
-                             "var": "n",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Name"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "w",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Weight"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rw",
-                             "value": {
-                              "op": "sum",
-                              "values": [
-                               100,
-                               {
-                                "op": "negative",
-                                "value": {
-                                 "op": "get",
-                                 "var": "w"
-                                }
-                               }
-                              ]
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rule",
-                             "value": {
-                              "choices": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "n"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "unset"
-                                }
-                               ]
-                              },
-                              "weights": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "w"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "rw"
-                                }
-                               ]
-                              },
-                              "unit": {
-                               "op": "get",
-                               "var": "user_id"
-                              },
-                              "salt": {
-                               "op": "get",
-                               "var": "n"
-                              },
-                              "op": "weightedChoice"
-                             }
-                            }
-                           ]
-                          }
-                         }
-                        ]
-                       }
-                      ]
-                     }
-                    }
-                   ]
-                  }
-                 ]
-                }
-               }
-              ]
-             },
-             {
-              "op": "cond",
-              "cond": [
-               {
-                "if": {
-                 "op": "equals",
-                 "left": {
-                  "op": "get",
-                  "var": "rule"
-                 },
-                 "right": {
-                  "op": "get",
-                  "var": "unset"
-                 }
-                },
-                "then": {
-                 "op": "seq",
-                 "seq": [
-                  {
-                   "op": "set",
-                   "var": "index",
-                   "value": {
-                    "op": "sum",
-                    "values": [
-                     {
-                      "op": "get",
-                      "var": "index"
-                     },
-                     1
-                    ]
-                   }
-                  },
-                  {
-                   "op": "cond",
-                   "cond": [
-                    {
-                     "if": {
-                      "op": "<",
-                      "left": {
-                       "op": "get",
-                       "var": "index"
-                      },
-                      "right": {
-                       "op": "get",
-                       "var": "len"
-                      }
-                     },
-                     "then": {
-                      "op": "seq",
-                      "seq": [
-                       {
-                        "op": "set",
-                        "var": "atr",
-                        "value": {
-                         "op": "index",
-                         "base": {
-                          "op": "get",
-                          "var": "after_time_rules"
-                         },
-                         "index": {
-                          "op": "get",
-                          "var": "index"
-                         }
-                        }
-                       },
-                       {
-                        "op": "cond",
-                        "cond": [
-                         {
-                          "if": {
-                           "op": ">",
-                           "left": {
-                            "op": "get",
-                            "var": "user_created_at"
-                           },
-                           "right": {
-                            "op": "index",
-                            "base": {
-                             "op": "get",
-                             "var": "atr"
-                            },
-                            "index": "AfterTime"
-                           }
-                          },
-                          "then": {
-                           "op": "seq",
-                           "seq": [
-                            {
-                             "op": "set",
-                             "var": "n",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Name"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "w",
-                             "value": {
-                              "op": "index",
-                              "base": {
-                               "op": "get",
-                               "var": "atr"
-                              },
-                              "index": "Weight"
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rw",
-                             "value": {
-                              "op": "sum",
-                              "values": [
-                               100,
-                               {
-                                "op": "negative",
-                                "value": {
-                                 "op": "get",
-                                 "var": "w"
-                                }
-                               }
-                              ]
-                             }
-                            },
-                            {
-                             "op": "set",
-                             "var": "rule",
-                             "value": {
-                              "choices": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "n"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "unset"
-                                }
-                               ]
-                              },
-                              "weights": {
-                               "op": "array",
-                               "values": [
-                                {
-                                 "op": "get",
-                                 "var": "w"
-                                },
-                                {
-                                 "op": "get",
-                                 "var": "rw"
-                                }
-                               ]
-                              },
-                              "unit": {
-                               "op": "get",
-                               "var": "user_id"
-                              },
-                              "salt": {
-                               "op": "get",
-                               "var": "n"
-                              },
-                              "op": "weightedChoice"
-                             }
-                            }
-                           ]
-                          }
-                         }
-                        ]
-                       }
-                      ]
-                     }
-                    }
-                   ]
                   }
                  ]
                 }
@@ -1942,51 +226,58 @@
     "cond": [
      {
       "if": {
-       "op": "equals",
-       "left": {
-        "op": "get",
-        "var": "rule"
-       },
-       "right": {
-        "op": "get",
-        "var": "unset"
+       "op": "not",
+       "value": {
+        "op": "equals",
+        "left": {
+         "op": "get",
+         "var": "rule"
+        },
+        "right": {
+         "op": "get",
+         "var": "unset"
+        }
        }
       },
       "then": {
        "op": "seq",
        "seq": [
         {
-         "op": "set",
-         "var": "rule",
-         "value": {
-          "choices": {
-           "op": "index",
-           "base": {
-            "op": "get",
-            "var": "common_rules"
-           },
-           "index": "Names"
-          },
-          "weights": {
-           "op": "index",
-           "base": {
-            "op": "get",
-            "var": "common_rules"
-           },
-           "index": "Weights"
-          },
-          "unit": {
-           "op": "get",
-           "var": "user_id"
-          },
-          "salt": "common_rules",
-          "op": "weightedChoice"
-         }
+         "op": "return",
+         "value": true
         }
        ]
       }
      }
     ]
+   },
+   {
+    "op": "set",
+    "var": "rule",
+    "value": {
+     "choices": {
+      "op": "index",
+      "base": {
+       "op": "get",
+       "var": "common_rules"
+      },
+      "index": "Names"
+     },
+     "weights": {
+      "op": "index",
+      "base": {
+       "op": "get",
+       "var": "common_rules"
+      },
+      "index": "Weights"
+     },
+     "unit": {
+      "op": "get",
+      "var": "user_id"
+     },
+     "salt": "common_rules",
+     "op": "weightedChoice"
+    }
    }
   ]
  }

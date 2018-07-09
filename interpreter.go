@@ -33,7 +33,7 @@ type Interpreter struct {
 	parameterSalt              string
 }
 
-func (interpreter *Interpreter) Run(force ...bool) (map[string]interface{}, bool) {
+func (interpreter *Interpreter) Run(force ...bool) (outputs map[string]interface{}, success bool) {
 
 	if len(force) > 0 && force[0] == false {
 		if interpreter.Evaluated {
@@ -41,13 +41,17 @@ func (interpreter *Interpreter) Run(force ...bool) (map[string]interface{}, bool
 		}
 	}
 
-	defer func() (map[string]interface{}, bool) {
+	defer func() {
 		if r := recover(); r != nil {
 			fmt.Println("Recovered ", r)
-			return nil, false
+			outputs = nil
+			success = false
+			return
 		}
+
 		interpreter.Evaluated = true
-		return interpreter.Outputs, true
+		outputs = interpreter.Outputs
+		success = true
 	}()
 
 	interpreter.evaluate(interpreter.Code)

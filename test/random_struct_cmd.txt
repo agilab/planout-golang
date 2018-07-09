@@ -4,133 +4,22 @@ user_created_at = user["CreatedAt"];
 unset = "@unset";
 rule = unset;
 
-if (rule==unset) {
-    len = length(after_time_rules);
-    if (len > 0) {
-        index = -1;
-        if (rule==unset) {
-            index = index + 1;
-            if (index < len) {
-                atr = after_time_rules[index];
-                if (user_created_at > atr["AfterTime"]) {
-                    n = atr["Name"];
-                    w = atr["Weight"];
-                    rw = 100-w;
-                    rule = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
-                }
-            }
-        }
-        if (rule==unset) {
-            index = index + 1;
-            if (index < len) {
-                atr = after_time_rules[index];
-                if (user_created_at > atr["AfterTime"]) {
-                    n = atr["Name"];
-                    w = atr["Weight"];
-                    rw = 100-w;
-                    rule = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
-                }
-            }
-        }
-        if (rule==unset) {
-            index = index + 1;
-            if (index < len) {
-                atr = after_time_rules[index];
-                if (user_created_at > atr["AfterTime"]) {
-                    n = atr["Name"];
-                    w = atr["Weight"];
-                    rw = 100-w;
-                    rule = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
-                }
-            }
-        }
-        if (rule==unset) {
-            index = index + 1;
-            if (index < len) {
-                atr = after_time_rules[index];
-                if (user_created_at > atr["AfterTime"]) {
-                    n = atr["Name"];
-                    w = atr["Weight"];
-                    rw = 100-w;
-                    rule = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
-                }
-            }
-        }
-        if (rule==unset) {
-            index = index + 1;
-            if (index < len) {
-                atr = after_time_rules[index];
-                if (user_created_at > atr["AfterTime"]) {
-                    n = atr["Name"];
-                    w = atr["Weight"];
-                    rw = 100-w;
-                    rule = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
-                }
-            }
-        }
-        if (rule==unset) {
-            index = index + 1;
-            if (index < len) {
-                atr = after_time_rules[index];
-                if (user_created_at > atr["AfterTime"]) {
-                    n = atr["Name"];
-                    w = atr["Weight"];
-                    rw = 100-w;
-                    rule = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
-                }
-            }
-        }
-        if (rule==unset) {
-            index = index + 1;
-            if (index < len) {
-                atr = after_time_rules[index];
-                if (user_created_at > atr["AfterTime"]) {
-                    n = atr["Name"];
-                    w = atr["Weight"];
-                    rw = 100-w;
-                    rule = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
-                }
-            }
-        }
-        if (rule==unset) {
-            index = index + 1;
-            if (index < len) {
-                atr = after_time_rules[index];
-                if (user_created_at > atr["AfterTime"]) {
-                    n = atr["Name"];
-                    w = atr["Weight"];
-                    rw = 100-w;
-                    rule = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
-                }
-            }
-        }
-        if (rule==unset) {
-            index = index + 1;
-            if (index < len) {
-                atr = after_time_rules[index];
-                if (user_created_at > atr["AfterTime"]) {
-                    n = atr["Name"];
-                    w = atr["Weight"];
-                    rw = 100-w;
-                    rule = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
-                }
-            }
-        }
-        if (rule==unset) {
-            index = index + 1;
-            if (index < len) {
-                atr = after_time_rules[index];
-                if (user_created_at > atr["AfterTime"]) {
-                    n = atr["Name"];
-                    w = atr["Weight"];
-                    rw = 100-w;
-                    rule = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
-                }
-            }
+len = length(after_time_rules);
+if (len > 0) {
+    index = 0;
+    if (index < len) {
+        atr = after_time_rules[index];
+        if (user_created_at > atr["AfterTime"]) {
+            n = atr["Name"];
+            w = atr["Weight"];
+            rw = 100-w;
+            rule = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
         }
     }
 }
 
-if (rule==unset) {
-    rule = weightedChoice(choices=common_rules["Names"], weights=common_rules["Weights"], unit=user_id, salt="common_rules");
+if (rule!=unset) {
+    return true;
 }
+
+rule = weightedChoice(choices=common_rules["Names"], weights=common_rules["Weights"], unit=user_id, salt="common_rules");
