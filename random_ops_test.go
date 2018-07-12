@@ -35,18 +35,18 @@ type IDStruct struct {
 }
 
 type RuleAfterTime struct {
-	Name      string  // 策略名称
-	AfterTime float64 // 时间戳
+	PloyName  string  // 策略名称
 	Weight    float64 // 0-100 如果为20
+	AfterTime float64 // 时间戳
 }
 
 type RuleCommon struct {
-	Names   []interface{} // 策略名称
-	Weights []interface{} // 0-100 如果为20
+	PloyNames []interface{} // 策略名称
+	Weights   []interface{} // 0-100 如果为20
 }
 
 func TestRandomMany(t *testing.T) {
-	js := readTest("test/random_struct.json")
+	js := readTest("test/PlanCommon.json")
 
 	// 构造100000个老ID，100000个新ID
 	users := []*IDStruct{}
@@ -66,12 +66,12 @@ func TestRandomMany(t *testing.T) {
 
 	afterTimeRules := []interface{}{
 		&RuleAfterTime{
-			Name:      "after9999",
+			PloyName:  "after9999",
 			AfterTime: 9999,
 			Weight:    100,
 		},
 		&RuleAfterTime{
-			Name:      "after1000",
+			PloyName:  "after1000",
 			AfterTime: 1000,
 			Weight:    20,
 		},
@@ -81,16 +81,16 @@ func TestRandomMany(t *testing.T) {
 	}
 
 	commonRule := &RuleCommon{
-		Names:   []interface{}{"common1", "common2", "common3"},
-		Weights: []interface{}{20.0, 70.0, 10.0},
+		PloyNames: []interface{}{"common1", "common2", "common3"},
+		Weights:   []interface{}{20.0, 70.0, 10.0},
 	}
 
 	counters := map[string]int64{}
 	for _, user := range users {
 		params := map[string]interface{}{}
-		params["after_time_rules"] = afterTimeRules
-		params["common_rules"] = commonRule
-		params["user"] = user
+		params["RuleAfterTime"] = afterTimeRules
+		params["RuleCommon"] = commonRule
+		params["User"] = user
 
 		expt := &Interpreter{
 			Salt:      "global_salt",
@@ -107,8 +107,8 @@ func TestRandomMany(t *testing.T) {
 			return
 		}
 
-		rule := output["rule"].(string)
-		counters[rule]++
+		ploy := output["ploy"].(string)
+		counters[ploy]++
 	}
 	str, _ := json.Marshal(counters)
 	log.Println("result", string(str))
@@ -117,27 +117,27 @@ func TestRandomMany(t *testing.T) {
 }
 
 func TestRandomStruct(t *testing.T) {
-	js := readTest("test/random_struct.json")
+	js := readTest("test/PlanCommon.json")
 
 	params := map[string]interface{}{}
-	params["after_time_rules"] = []interface{}{
+	params["RuleAfterTime"] = []interface{}{
 		&RuleAfterTime{
-			Name:      "after9999",
+			PloyName:  "after9999",
 			AfterTime: 9999,
 			Weight:    100,
 		},
 		&RuleAfterTime{
-			Name:      "after1000",
+			PloyName:  "after1000",
 			AfterTime: 1000,
 			Weight:    20,
 		},
 	}
-	params["common_rules"] = &RuleCommon{
-		Names:   []interface{}{"common1", "common2", "common3"},
-		Weights: []interface{}{20.0, 70.0, 10.0},
+	params["RuleCommon"] = &RuleCommon{
+		PloyNames: []interface{}{"common1", "common2", "common3"},
+		Weights:   []interface{}{20.0, 70.0, 10.0},
 	}
 
-	params["user"] = &IDStruct{
+	params["User"] = &IDStruct{
 		ID:        generateString(),
 		CreatedAt: 1000000,
 	}

@@ -1,0 +1,142 @@
+user_id = User["ID"];
+user_created_at = User["CreatedAt"];
+
+unset = "@unset";
+ploy = unset;
+
+len = length(RuleAfterTime);
+if (len > 0) {
+    index = 0;
+    if (index < len) {
+        rat = RuleAfterTime[index];
+        if (user_created_at > rat["AfterTime"]) {
+            n = rat["PloyName"];
+            w = rat["Weight"];
+            rw = 100-w;
+            ploy = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
+        }
+    }
+    if (ploy!=unset) {
+        return true;
+    }
+    index = index + 1;
+    if (index < len) {
+        rat = RuleAfterTime[index];
+        if (user_created_at > rat["AfterTime"]) {
+            n = rat["PloyName"];
+            w = rat["Weight"];
+            rw = 100-w;
+            ploy = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
+        }
+    }
+    if (ploy!=unset) {
+        return true;
+    }
+    index = index + 1;
+    if (index < len) {
+        rat = RuleAfterTime[index];
+        if (user_created_at > rat["AfterTime"]) {
+            n = rat["PloyName"];
+            w = rat["Weight"];
+            rw = 100-w;
+            ploy = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
+        }
+    }
+    if (ploy!=unset) {
+        return true;
+    }
+    index = index + 1;
+    if (index < len) {
+        rat = RuleAfterTime[index];
+        if (user_created_at > rat["AfterTime"]) {
+            n = rat["PloyName"];
+            w = rat["Weight"];
+            rw = 100-w;
+            ploy = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
+        }
+    }
+    if (ploy!=unset) {
+        return true;
+    }
+    index = index + 1;
+    if (index < len) {
+        rat = RuleAfterTime[index];
+        if (user_created_at > rat["AfterTime"]) {
+            n = rat["PloyName"];
+            w = rat["Weight"];
+            rw = 100-w;
+            ploy = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
+        }
+    }
+    if (ploy!=unset) {
+        return true;
+    }
+    index = index + 1;
+    if (index < len) {
+        rat = RuleAfterTime[index];
+        if (user_created_at > rat["AfterTime"]) {
+            n = rat["PloyName"];
+            w = rat["Weight"];
+            rw = 100-w;
+            ploy = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
+        }
+    }
+    if (ploy!=unset) {
+        return true;
+    }
+    index = index + 1;
+    if (index < len) {
+        rat = RuleAfterTime[index];
+        if (user_created_at > rat["AfterTime"]) {
+            n = rat["PloyName"];
+            w = rat["Weight"];
+            rw = 100-w;
+            ploy = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
+        }
+    }
+    if (ploy!=unset) {
+        return true;
+    }
+    index = index + 1;
+    if (index < len) {
+        rat = RuleAfterTime[index];
+        if (user_created_at > rat["AfterTime"]) {
+            n = rat["PloyName"];
+            w = rat["Weight"];
+            rw = 100-w;
+            ploy = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
+        }
+    }
+    if (ploy!=unset) {
+        return true;
+    }
+    index = index + 1;
+    if (index < len) {
+        rat = RuleAfterTime[index];
+        if (user_created_at > rat["AfterTime"]) {
+            n = rat["PloyName"];
+            w = rat["Weight"];
+            rw = 100-w;
+            ploy = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
+        }
+    }
+    if (ploy!=unset) {
+        return true;
+    }
+    index = index + 1;
+    if (index < len) {
+        rat = RuleAfterTime[index];
+        if (user_created_at > rat["AfterTime"]) {
+            n = rat["PloyName"];
+            w = rat["Weight"];
+            rw = 100-w;
+            ploy = weightedChoice(choices=[n,unset], weights=[w, rw], unit=user_id, salt=n);
+        }
+    }
+}
+
+if (ploy!=unset) {
+    return true;
+}
+
+ploy = weightedChoice(choices=RuleCommon["PloyNames"], weights=RuleCommon["Weights"], unit=user_id, salt="RuleCommon");
